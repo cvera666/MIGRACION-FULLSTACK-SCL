@@ -1,0 +1,15 @@
+SELECT DISTINCT A.COD_BODEGA 
+FROM OPENQUERY(RSCLPAN,'
+    SELECT COD_BODEGA 
+    FROM AL_MOVIMIENTOS
+    WHERE NOM_USUARORA = ''MIGRAPP''
+    AND TIP_STOCK IN (''2'', ''10'')
+    AND COD_ARTICULO IN (
+        ''1672'', ''675'', ''668'', ''1119'', ''665'', ''669'', ''666'', ''670'', 
+        ''674'', ''1264'', ''671'', ''1118'', ''1673'', ''1674'', ''1675'', 
+        ''1676'', ''1677'', ''1678'', ''1679''
+    )
+    AND COD_ESTADO <> ''22''
+') AS A
+LEFT JOIN migracion_mapeo_06102023 AS B ON A.COD_BODEGA = B.COD_BODEGA_SCL
+WHERE B.COD_BODEGA_SCL IS NULL;
